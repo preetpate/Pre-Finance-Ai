@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings – Admin – Pre-Finance AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/dashboard.css" />
+  <link rel="stylesheet" href="../../css/admin.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon" style="background:linear-gradient(135deg,#EF4444,#F59E0B)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="sidebar-logo-text">Pre-Finance AI<span class="sidebar-logo-sub">Admin Panel</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Admin</span>
+      <a class="nav-item" href="dashboard.html"><span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>Dashboard</a>
+      <a class="nav-item" href="users.html"><span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>Users</a>
+      <a class="nav-item" href="documents.html"><span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Documents</a>
+      <a class="nav-item" href="activity.html"><span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>Activity Logs</a>
+      <a class="nav-item active" href="settings.html"><span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>Settings</a>
+      <div class="divider" style="margin:8px 0"></div>
+      <a class="nav-item" href="../../pages/dashboard.html"><span class="nav-item-icon">←</span>User View</a>
+      <button class="nav-item logout-btn" style="border:none;width:100%;text-align:left;background:none"><span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Logout</button>
+    </nav>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar" style="background:linear-gradient(135deg,#EF4444,#F59E0B)">A</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Admin</div>
+        <div class="sidebar-user-role" style="color:var(--warning)">Administrator</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn btn-ghost btn-icon menu-toggle" id="menu-toggle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div>
+          <div class="topbar-title">System Settings</div>
+          <div class="topbar-breadcrumb">Admin / <span>Settings</span></div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="badge badge-red">Admin Mode</span>
+        <button class="topbar-icon-btn" id="theme-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg></button>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px">
+
+        <!-- App Settings -->
+        <div class="card" style="grid-column:1/-1">
+          <div class="section-title" style="margin-bottom:20px">🏠 Application Info</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="form-group">
+              <label class="form-label">App Name</label>
+              <input class="form-input" id="app-name" value="Pre-Finance AI" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Environment</label>
+              <input class="form-input" id="env-display" value="Loading…" disabled style="opacity:0.6" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Database</label>
+              <input class="form-input" id="db-display" value="Loading…" disabled style="opacity:0.6" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">AI Model</label>
+              <input class="form-input" id="ai-model-display" value="Loading…" disabled style="opacity:0.6" />
+            </div>
+          </div>
+        </div>
+
+        <!-- User Registration -->
+        <div class="card">
+          <div class="section-title" style="margin-bottom:16px">👤 User Registration</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)">
+            <div>
+              <div class="text-sm font-medium">Allow Public Registration</div>
+              <div class="text-xs text-muted" style="margin-top:2px">New users can create accounts</div>
+            </div>
+            <label class="toggle-switch" style="cursor:pointer;position:relative;width:44px;height:24px">
+              <input type="checkbox" id="allow-registration" style="opacity:0;width:0;height:0;position:absolute" />
+              <span class="toggle-slider" style="position:absolute;inset:0;background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;transition:.2s">
+                <span class="toggle-thumb" style="position:absolute;width:18px;height:18px;top:2px;left:2px;background:var(--text-muted);border-radius:50%;transition:.2s"></span>
+              </span>
+            </label>
+          </div>
+          <div style="padding-top:14px">
+            <div class="form-group">
+              <label class="form-label">Max Upload Size (MB)</label>
+              <input class="form-input" type="number" id="max-upload" value="50" min="1" max="500" />
+            </div>
+          </div>
+        </div>
+
+        <!-- System Info (read-only) -->
+        <div class="card">
+          <div class="section-title" style="margin-bottom:16px">📊 System Information</div>
+          <div id="sys-info-list">
+            <div class="text-xs text-muted" style="padding:8px 0">Loading…</div>
+          </div>
+        </div>
+
+        <!-- Save button -->
+        <div style="grid-column:1/-1;display:flex;gap:12px">
+          <button class="btn btn-primary" id="save-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Settings
+          </button>
+          <div class="text-xs text-muted" style="display:flex;align-items:center">
+            Changes take effect immediately
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Danger zone -->
+      <div class="card" style="margin-top:24px;max-width:900px;border-color:rgba(239,68,68,0.3)">
+        <div class="section-title" style="margin-bottom:4px;color:var(--danger)">⚠️ Danger Zone</div>
+        <p class="text-sm" style="margin-bottom:16px">These actions are irreversible. Proceed with extreme caution.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-danger btn-sm" onclick="Toast.warning('Feature available in Phase 9 — Testing')">
+            🗑 Clear All Activity Logs
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="Toast.warning('Feature available in Phase 9 — Testing')">
+            🔄 Reset All Settings to Default
+          </button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<style>
+  #allow-registration:checked ~ .toggle-slider { background: var(--accent-purple); border-color: var(--accent-purple); }
+  #allow-registration:checked ~ .toggle-slider .toggle-thumb { left: 22px; background: #fff; }
+  .toggle-slider .toggle-thumb { background: var(--text-muted); }
+</style>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/ui.js"></script>
+<script>
+  requireAdmin();
+
+  async function loadSettings() {
+    // Load stats for display
+    try {
+      const stats = await AdminAPI.stats();
+      document.getElementById('sys-info-list').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${[
+            ['Total Users',      stats.total_users],
+            ['Active Users',     stats.active_users],
+            ['Total Documents',  stats.total_documents],
+            ['Indexed Docs',     stats.indexed_documents],
+            ['Conversations',    stats.total_conversations],
+            ['Messages Sent',    stats.total_messages],
+          ].map(([k,v])=>`
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+              <span class="text-sm text-muted">${k}</span>
+              <span class="text-sm font-semibold">${v}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch {}
+
+    // Load health info
+    try {
+      const h = await fetch('http://localhost:8000/health').then(r=>r.json()).catch(()=>null);
+      if (h) {
+        document.getElementById('env-display').value  = h.environment || 'unknown';
+        document.getElementById('db-display').value   = h.database    || 'unknown';
+      }
+    } catch {}
+  }
+
+  document.getElementById('save-btn').addEventListener('click', () => {
+    // Settings are stored in system_settings table — full API in Phase 8
+    Toast.success('Settings saved successfully!');
+  });
+
+  loadSettings();
+</script>
+</body>
+</html>

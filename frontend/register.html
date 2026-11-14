@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – Pre-Finance AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- Left branding panel -->
+  <div class="auth-brand">
+    <div class="brand-logo">
+      <div class="brand-logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      Pre-Finance AI
+    </div>
+
+    <div class="brand-content">
+      <h2>Get Started<br/>for <span>Free Today</span></h2>
+      <p>Create your account and start analyzing financial documents with AI — completely offline, completely secure.</p>
+    </div>
+
+    <div class="brand-features">
+      <div class="brand-feature">
+        <div class="brand-feature-icon">✓</div> Free forever — no subscriptions
+      </div>
+      <div class="brand-feature">
+        <div class="brand-feature-icon">✓</div> Local AI — your data never leaves your machine
+      </div>
+      <div class="brand-feature">
+        <div class="brand-feature-icon">✓</div> Upload PDF, DOCX, TXT instantly
+      </div>
+      <div class="brand-feature">
+        <div class="brand-feature-icon">✓</div> Unlimited chat history
+      </div>
+    </div>
+
+    <div class="brand-footer">© 2024 Pre-Finance AI · <a href="#" style="color:var(--accent-purple)">Privacy Policy</a></div>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="auth-form-panel">
+    <div class="auth-form-box">
+
+      <div class="auth-form-header">
+        <h1>Create account</h1>
+        <p>Join Pre-Finance AI — free, offline, powerful</p>
+      </div>
+
+      <form class="auth-form" id="register-form" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="name">Full name</label>
+          <input class="form-input" type="text" id="name" placeholder="John Doe" autocomplete="name" required />
+          <span class="form-error" id="name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email address</label>
+          <input class="form-input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+          <span class="form-error" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <input class="form-input" type="password" id="password" placeholder="Minimum 8 characters" autocomplete="new-password" required />
+            <button type="button" class="input-toggle" id="toggle-pwd">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <!-- Strength bar -->
+          <div class="strength-bar" id="strength-bar">
+            <div class="strength-segment" id="s1"></div>
+            <div class="strength-segment" id="s2"></div>
+            <div class="strength-segment" id="s3"></div>
+            <div class="strength-segment" id="s4"></div>
+          </div>
+          <div class="strength-label" id="strength-label"></div>
+          <span class="form-error" id="password-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirm-password">Confirm password</label>
+          <input class="form-input" type="password" id="confirm-password" placeholder="Repeat your password" autocomplete="new-password" required />
+          <span class="form-error" id="confirm-error"></span>
+        </div>
+
+        <span class="form-error" id="general-error" style="text-align:center;display:block"></span>
+
+        <button class="btn btn-primary btn-auth" type="submit" id="register-btn">
+          <span id="btn-text">Create Account</span>
+          <span id="btn-spinner" class="spinner" style="display:none"></span>
+        </button>
+
+        <div class="auth-link-row">
+          Already have an account? <a href="login.html">Sign in</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  redirectIfLoggedIn();
+  Theme.init();
+
+  // Password toggle
+  document.getElementById('toggle-pwd').addEventListener('click', () => {
+    const p = document.getElementById('password');
+    p.type = p.type === 'password' ? 'text' : 'password';
+  });
+
+  // Strength meter
+  document.getElementById('password').addEventListener('input', function() {
+    const v = this.value;
+    const scores = [v.length >= 8, /[A-Z]/.test(v), /\d/.test(v), /[^A-Za-z0-9]/.test(v)];
+    const strength = scores.filter(Boolean).length;
+    const colors = ['', '#EF4444', '#F59E0B', '#3B82F6', '#22C55E'];
+    const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+    ['s1','s2','s3','s4'].forEach((id, i) => {
+      document.getElementById(id).style.background = i < strength ? colors[strength] : 'var(--border)';
+    });
+    document.getElementById('strength-label').textContent = v ? labels[strength] : '';
+    document.getElementById('strength-label').style.color = colors[strength];
+  });
+
+  function clearErrors() {
+    ['name-error','email-error','password-error','confirm-error','general-error'].forEach(id => {
+      document.getElementById(id).textContent = '';
+    });
+  }
+
+  document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const name     = document.getElementById('name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirm-password').value;
+
+    let valid = true;
+    if (!name)    { document.getElementById('name-error').textContent = 'Name is required.'; valid = false; }
+    if (!email)   { document.getElementById('email-error').textContent = 'Email is required.'; valid = false; }
+    if (password.length < 8) { document.getElementById('password-error').textContent = 'Password must be at least 8 characters.'; valid = false; }
+    if (password !== confirm) { document.getElementById('confirm-error').textContent = 'Passwords do not match.'; valid = false; }
+    if (!valid) return;
+
+    const btn = document.getElementById('register-btn');
+    btn.disabled = true;
+    document.getElementById('btn-text').style.display = 'none';
+    document.getElementById('btn-spinner').style.display = 'inline-block';
+
+    try {
+      await AuthAPI.register(name, email, password);
+      Toast.success('Account created! Redirecting to login…');
+      setTimeout(() => window.location.href = 'login.html', 1500);
+    } catch (err) {
+      document.getElementById('general-error').textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      document.getElementById('btn-text').style.display = 'inline';
+      document.getElementById('btn-spinner').style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>

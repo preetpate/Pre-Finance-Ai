@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documents – Pre-Finance AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar (same structure) -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="sidebar-logo-text">Pre-Finance AI<span class="sidebar-logo-sub">Document Intelligence</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Main</span>
+      <a class="nav-item" data-page="dashboard" href="dashboard.html">
+        <span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        Overview
+      </a>
+      <a class="nav-item" data-page="chat" href="chat.html">
+        <span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        AI Chat
+      </a>
+      <a class="nav-item active" data-page="documents" href="documents.html">
+        <span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+        My Documents
+      </a>
+      <span class="nav-section-label">Account</span>
+      <a class="nav-item" href="profile.html">
+        <span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+        Profile
+      </a>
+      <button class="nav-item logout-btn" style="border:none;width:100%;text-align:left;background:none">
+        <span class="nav-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+        Logout
+      </button>
+    </nav>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">…</div>
+        <div class="sidebar-user-role" id="sidebar-user-role">user</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn btn-ghost btn-icon menu-toggle" id="menu-toggle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div>
+          <div class="topbar-title">My Documents</div>
+          <div class="topbar-breadcrumb">Pre-Finance AI / <span>Documents</span></div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn" id="theme-toggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <button class="btn btn-primary btn-sm" id="upload-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload
+        </button>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- Upload zone -->
+      <div class="card" id="drop-zone" style="border:2px dashed var(--border);cursor:pointer;transition:all 0.2s;margin-bottom:24px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;text-align:center">
+          <div style="width:48px;height:48px;background:rgba(139,92,246,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem">📤</div>
+          <div>
+            <div class="font-semibold text-sm">Drop files here or <span class="text-purple" style="cursor:pointer" id="browse-link">browse</span></div>
+            <div class="text-xs text-muted" style="margin-top:4px">PDF, DOCX, TXT · Max 50 MB each</div>
+          </div>
+          <div id="upload-progress" style="display:none;width:100%;max-width:300px">
+            <div style="background:var(--border);border-radius:4px;height:4px;overflow:hidden">
+              <div id="progress-bar" style="background:var(--accent-grad);height:100%;width:0%;transition:width 0.3s"></div>
+            </div>
+            <div class="text-xs text-muted" style="margin-top:4px;text-align:center" id="progress-label">Uploading…</div>
+          </div>
+        </div>
+        <input type="file" id="file-input" accept=".pdf,.txt,.docx" multiple style="display:none" />
+      </div>
+
+      <!-- Toolbar -->
+      <div class="flex items-center justify-between gap-3" style="margin-bottom:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-md);padding:7px 12px;flex:1;max-width:300px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="search-input" placeholder="Search documents…" style="background:none;border:none;color:var(--text-primary);font-size:0.875rem;width:100%" />
+        </div>
+        <div class="flex gap-2">
+          <select id="filter-status" class="form-input" style="width:auto;font-size:0.8125rem;padding:7px 12px">
+            <option value="">All status</option>
+            <option value="pending">Pending</option>
+            <option value="indexed">Indexed</option>
+            <option value="failed">Failed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Documents grid -->
+      <div id="docs-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+        <!-- filled by JS -->
+      </div>
+      <div id="docs-empty" class="empty-state" style="display:none">
+        <div class="empty-state-icon">📂</div>
+        <h3>No documents yet</h3>
+        <p>Upload a PDF, DOCX, or TXT file to get started</p>
+        <button class="btn btn-primary btn-sm" id="empty-upload-btn">Upload your first document</button>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  requireAuth();
+  let allDocs = [];
+
+  async function loadDocs() {
+    try {
+      allDocs = await DocsAPI.list();
+      renderDocs(allDocs);
+    } catch (e) { Toast.error(e.message); }
+  }
+
+  function renderDocs(docs) {
+    const grid = document.getElementById('docs-grid');
+    const empty = document.getElementById('docs-empty');
+    if (!docs.length) { grid.innerHTML = ''; empty.style.display = 'flex'; return; }
+    empty.style.display = 'none';
+    grid.innerHTML = docs.map(d => `
+      <div class="card card-hover" style="padding:18px">
+        <div class="flex items-center gap-3" style="margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(139,92,246,0.1);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0">
+            ${d.file_type === 'pdf' ? '📕' : d.file_type === 'docx' ? '📘' : '📄'}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="truncate font-semibold text-sm">${d.original_name}</div>
+            <div class="text-xs text-muted">${d.file_type.toUpperCase()} · ${formatBytes(d.file_size)}</div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between" style="margin-bottom:12px">
+          <span class="badge ${d.status === 'indexed' ? 'badge-green' : d.status === 'processing' ? 'badge-yellow' : d.status === 'failed' ? 'badge-red' : 'badge-gray'}">${d.status}</span>
+          <span class="text-xs text-muted">${d.page_count ? d.page_count + ' pages' : '—'}</span>
+        </div>
+        <div class="text-xs text-muted" style="margin-bottom:12px">Uploaded ${formatDate(d.created_at)}</div>
+        <div class="flex gap-2">
+          <a href="chat.html" class="btn btn-secondary btn-sm flex-1" style="justify-content:center">Ask AI</a>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteDoc('${d.id}', '${d.original_name.replace(/'/g, "\\'")}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function deleteDoc(id, name) {
+    const ok = await confirm('Delete Document', `Delete "${name}"? This cannot be undone.`);
+    if (!ok) return;
+    try {
+      await DocsAPI.delete(id);
+      Toast.success('Document deleted.');
+      loadDocs();
+    } catch (e) { Toast.error(e.message); }
+  }
+
+  // Search / filter
+  function applyFilters() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const status = document.getElementById('filter-status').value;
+    renderDocs(allDocs.filter(d => {
+      const matchQ = d.original_name.toLowerCase().includes(q);
+      const matchS = !status || d.status === status;
+      return matchQ && matchS;
+    }));
+  }
+  document.getElementById('search-input').addEventListener('input', applyFilters);
+  document.getElementById('filter-status').addEventListener('change', applyFilters);
+
+  // Upload
+  function triggerUpload() { document.getElementById('file-input').click(); }
+  document.getElementById('upload-btn').addEventListener('click', triggerUpload);
+  document.getElementById('browse-link').addEventListener('click', triggerUpload);
+  document.getElementById('empty-upload-btn')?.addEventListener('click', triggerUpload);
+
+  document.getElementById('drop-zone').addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.currentTarget.style.borderColor = 'var(--accent-purple)';
+  });
+  document.getElementById('drop-zone').addEventListener('dragleave', (e) => {
+    e.currentTarget.style.borderColor = 'var(--border)';
+  });
+  document.getElementById('drop-zone').addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.currentTarget.style.borderColor = 'var(--border)';
+    handleFiles(Array.from(e.dataTransfer.files));
+  });
+
+  document.getElementById('file-input').addEventListener('change', (e) => {
+    handleFiles(Array.from(e.target.files));
+    e.target.value = '';
+  });
+
+  async function handleFiles(files) {
+    if (!files.length) return;
+    const prog = document.getElementById('upload-progress');
+    const bar = document.getElementById('progress-bar');
+    const label = document.getElementById('progress-label');
+    prog.style.display = 'block';
+    let done = 0;
+    for (const file of files) {
+      label.textContent = `Uploading ${file.name}…`;
+      try {
+        await DocsAPI.upload(file);
+        done++;
+        bar.style.width = (done / files.length * 100) + '%';
+        Toast.success(`${file.name} uploaded`);
+      } catch (e) { Toast.error(`${file.name}: ${e.message}`); }
+    }
+    setTimeout(() => { prog.style.display = 'none'; bar.style.width = '0%'; }, 1500);
+    loadDocs();
+  }
+
+  loadDocs();
+</script>
+</body>
+</html>

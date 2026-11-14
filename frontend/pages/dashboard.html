@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – Pre-Finance AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ── Sidebar ───────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="sidebar-logo-text">
+        Pre-Finance AI
+        <span class="sidebar-logo-sub">Document Intelligence</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Main</span>
+
+      <a class="nav-item active" data-page="dashboard" href="dashboard.html">
+        <span class="nav-item-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </span>
+        Overview
+      </a>
+
+      <a class="nav-item" data-page="chat" href="chat.html">
+        <span class="nav-item-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </span>
+        AI Chat
+      </a>
+
+      <a class="nav-item" data-page="documents" href="documents.html">
+        <span class="nav-item-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </span>
+        My Documents
+      </a>
+
+      <span class="nav-section-label">Account</span>
+
+      <a class="nav-item" data-page="profile" href="profile.html">
+        <span class="nav-item-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Profile
+      </a>
+
+      <a class="nav-item" data-page="settings" href="settings.html">
+        <span class="nav-item-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </span>
+        Settings
+      </a>
+
+      <button class="nav-item logout-btn" style="border:none;width:100%;text-align:left;background:none">
+        <span class="nav-item-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </span>
+        Logout
+      </button>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebar-user-name">Loading…</div>
+        <div class="sidebar-user-role" id="sidebar-user-role">user</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main area ─────────────────────────────────────────── -->
+  <div class="main-area">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn btn-ghost btn-icon menu-toggle" id="menu-toggle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <div>
+          <div class="topbar-title">Overview</div>
+          <div class="topbar-breadcrumb">Pre-Finance AI / <span>Dashboard</span></div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn theme-toggle" id="theme-toggle" title="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <a href="chat.html" class="btn btn-primary btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          New Chat
+        </a>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="page-content">
+
+      <!-- Welcome -->
+      <div style="margin-bottom:24px">
+        <h1 style="font-size:1.5rem;margin-bottom:4px">Good day, <span id="welcome-name" style="background:var(--accent-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">there</span> 👋</h1>
+        <p style="font-size:0.9rem">Here's what's happening with your documents and conversations.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card" style="--stat-color:rgba(139,92,246,0.15)">
+          <div class="stat-icon">📄</div>
+          <div class="stat-label">Total Documents</div>
+          <div class="stat-value" id="stat-docs">—</div>
+          <div class="stat-change">↑ Ready for analysis</div>
+        </div>
+        <div class="stat-card" style="--stat-color:rgba(59,130,246,0.15)">
+          <div class="stat-icon">💬</div>
+          <div class="stat-label">Conversations</div>
+          <div class="stat-value" id="stat-convs">—</div>
+          <div class="stat-change">↑ AI sessions</div>
+        </div>
+        <div class="stat-card" style="--stat-color:rgba(34,197,94,0.15)">
+          <div class="stat-icon">✅</div>
+          <div class="stat-label">Indexed Documents</div>
+          <div class="stat-value" id="stat-indexed">—</div>
+          <div class="stat-change">Ready to query</div>
+        </div>
+        <div class="stat-card" style="--stat-color:rgba(245,158,11,0.15)">
+          <div class="stat-icon">📊</div>
+          <div class="stat-label">AI Model</div>
+          <div class="stat-value" style="font-size:1rem;padding-top:4px">Qwen 2.5</div>
+          <div class="stat-change" style="color:var(--accent-blue)">Local Offline</div>
+        </div>
+      </div>
+
+      <!-- Two columns -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+        <!-- Recent documents -->
+        <div class="card">
+          <div class="section-header">
+            <div class="section-title">Recent Documents</div>
+            <a href="documents.html" class="btn btn-ghost btn-sm text-sm text-purple">View all</a>
+          </div>
+          <div id="recent-docs-list">
+            <div class="empty-state" style="padding:30px 0">
+              <div class="empty-state-icon">📂</div>
+              <p class="text-sm">No documents yet</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent conversations -->
+        <div class="card">
+          <div class="section-header">
+            <div class="section-title">Recent Conversations</div>
+            <a href="chat.html" class="btn btn-ghost btn-sm text-sm text-purple">Go to chat</a>
+          </div>
+          <div id="recent-convs-list">
+            <div class="empty-state" style="padding:30px 0">
+              <div class="empty-state-icon">💬</div>
+              <p class="text-sm">No conversations yet</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick actions -->
+      <div class="card" style="margin-top:20px">
+        <div class="section-title" style="margin-bottom:16px">Quick Actions</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="documents.html" class="btn btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Upload Document
+          </a>
+          <a href="chat.html" class="btn btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Start New Chat
+          </a>
+          <a href="profile.html" class="btn btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            Edit Profile
+          </a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  requireAuth();
+
+  async function loadDashboard() {
+    // Welcome name
+    const user = Auth.getUser();
+    if (user) document.getElementById('welcome-name').textContent = user.name.split(' ')[0];
+
+    // Documents
+    try {
+      const docs = await DocsAPI.list();
+      document.getElementById('stat-docs').textContent = docs.length;
+      document.getElementById('stat-indexed').textContent = docs.filter(d => d.status === 'indexed').length;
+
+      const list = document.getElementById('recent-docs-list');
+      if (docs.length === 0) return;
+      list.innerHTML = docs.slice(0, 5).map(d => `
+        <div class="flex items-center gap-3" style="padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:32px;height:32px;background:rgba(139,92,246,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.875rem;flex-shrink:0">
+            ${d.file_type === 'pdf' ? '📕' : d.file_type === 'docx' ? '📘' : '📄'}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="truncate text-sm font-medium">${d.original_name}</div>
+            <div class="text-xs text-muted">${formatBytes(d.file_size)} · ${formatDate(d.created_at)}</div>
+          </div>
+          <span class="badge ${d.status === 'indexed' ? 'badge-green' : d.status === 'processing' ? 'badge-yellow' : 'badge-gray'}">${d.status}</span>
+        </div>
+      `).join('');
+    } catch {}
+
+    // Conversations
+    try {
+      const convs = await ChatAPI.listConversations();
+      document.getElementById('stat-convs').textContent = convs.length;
+
+      const list = document.getElementById('recent-convs-list');
+      if (convs.length === 0) return;
+      list.innerHTML = convs.slice(0, 5).map(c => `
+        <a href="chat.html?id=${c.id}" class="flex items-center gap-3" style="padding:10px 0;border-bottom:1px solid var(--border);display:flex">
+          <div style="width:32px;height:32px;background:rgba(59,130,246,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.875rem;flex-shrink:0">💬</div>
+          <div style="flex:1;min-width:0">
+            <div class="truncate text-sm font-medium">${c.title}</div>
+            <div class="text-xs text-muted">${formatDateTime(c.updated_at)}</div>
+          </div>
+        </a>
+      `).join('');
+    } catch {}
+  }
+
+  loadDashboard();
+</script>
+</body>
+</html>

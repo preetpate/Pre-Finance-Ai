@@ -1,0 +1,823 @@
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║                     PRE-FINANCE AI — COMPLETE PROJECT MASTER FILE                    ║
+║                    (Save this file. If code is lost, rebuild from here.)             ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+Last Updated : Phase 1 Complete
+Project Type : Full-Stack Offline AI SaaS Application
+Portfolio Use: AI/ML Interviews, GitHub Showcase
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1 — WHAT THIS PROJECT IS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pre-Finance AI is a completely offline, free, full-stack AI-powered document
+intelligence platform. Users upload PDF, DOCX, or TXT documents, then ask
+questions about them in plain English. The AI answers with source citations
+pointing to exact page numbers from the uploaded documents.
+
+ZERO paid APIs. ZERO cloud AI. Everything runs on your local machine.
+
+Core AI workflow:
+  User uploads PDF/DOCX/TXT
+    → Text extracted (PyMuPDF / python-docx)
+    → Split into chunks (Recursive Splitter)
+    → Embeddings created (Sentence Transformers — local)
+    → Stored in FAISS vector database (local)
+    → User asks question
+    → Top matching chunks retrieved from FAISS
+    → Sent as context to Ollama (local LLM)
+    → Answer + source citations returned to user
+
+This is called RAG (Retrieval-Augmented Generation) architecture.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2 — TECHNOLOGY STACK (ALL FREE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Layer             | Technology              | Version / Notes
+──────────────────┼─────────────────────────┼──────────────────────────────────────
+Frontend          | HTML + CSS + JavaScript | No React, no build tools
+UI Framework      | Vanilla CSS (custom)    | Design system in style.css
+Icons             | Unicode / SVG inline    | No icon library dependency
+Backend           | Python + FastAPI        | 0.111.0
+Database          | SQLite                  | File: data/prefinance.db
+ORM               | SQLAlchemy (async)      | 2.0.30
+Auth – Password   | Argon2id via passlib    | NOT bcrypt, NOT plaintext
+Auth – Sessions   | JWT (python-jose)       | HS256, 60 min expiry
+Data Validation   | Pydantic v2             | 2.7.1
+AI – LLM          | Ollama                  | Local server, port 11434
+AI – Model        | Qwen 2.5 1.5B           | Fits in 4GB VRAM (RTX 3050)
+AI – Embeddings   | Sentence Transformers   | all-MiniLM-L6-v2 (local)
+Vector Database   | FAISS (CPU)             | faiss-cpu 1.8.0
+PDF Extraction    | PyMuPDF (fitz)          | 1.24.3 — with page numbers
+DOCX Extraction   | python-docx             | 1.1.2
+Async HTTP        | httpx                   | For Ollama API calls
+Charts            | Chart.js                | 4.4.3 via CDN (admin panel)
+File Upload       | FastAPI multipart       | Validated by type + size
+Server Run        | Uvicorn (ASGI)          | with hot-reload in dev
+Version Control   | Git + GitHub            | —
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3 — COMPLETE DESIGN SYSTEM (Colors, Fonts, Spacing)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THEME: Dark Premium SaaS — inspired by DocPilot reference image
+
+━━ BACKGROUND COLORS ━━
+  --bg-primary:    #0B1120   (deepest background — page base)
+  --bg-secondary:  #111827   (sidebar, topbar, panels)
+  --bg-card:       #151C2E   (card surfaces)
+  --bg-elevated:   #1A2235   (input backgrounds, code boxes)
+  --bg-hover:      #1E2A40   (hover state on nav items)
+
+━━ BRAND / ACCENT COLORS ━━
+  --accent-purple: #8B5CF6   (primary brand, active nav, borders)
+  --accent-blue:   #3B82F6   (secondary actions, info states)
+  --accent-indigo: #6366F1   (gradients)
+  --accent-grad:   linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)
+                   (buttons, logo icon, user avatar, highlighted text)
+
+━━ STATUS COLORS ━━
+  --success:  #22C55E   (green  — indexed, active, success)
+  --warning:  #F59E0B   (yellow — processing, pending, admin role)
+  --danger:   #EF4444   (red    — error, failed, delete, deactivated)
+  --info:     #06B6D4   (cyan   — info messages)
+
+━━ TEXT COLORS ━━
+  --text-primary:   #F1F5F9   (main readable text, headings)
+  --text-secondary: #94A3B8   (descriptions, body text)
+  --text-muted:     #64748B   (placeholder, metadata, labels)
+  --text-disabled:  #334155   (disabled state)
+
+━━ BORDERS ━━
+  --border:        #1E293B   (default border on all cards/inputs)
+  --border-focus:  #8B5CF6   (input focus ring)
+
+━━ ADMIN SPECIAL COLORS ━━
+  Admin sidebar icon: linear-gradient(135deg, #EF4444, #F59E0B)  (red-orange)
+  Admin badge: #EF4444 (red)
+  Admin user role text: #F59E0B (warning yellow)
+
+━━ LIGHT MODE OVERRIDES (data-theme="light") ━━
+  --bg-primary:    #F8FAFC
+  --bg-secondary:  #F1F5F9
+  --bg-card:       #FFFFFF
+  --bg-elevated:   #F8FAFC
+  --bg-hover:      #EEF2FF
+  --text-primary:  #0F172A
+  --text-secondary:#475569
+  --text-muted:    #94A3B8
+  --border:        #E2E8F0
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.08)
+
+━━ TYPOGRAPHY ━━
+  Font Family : 'Inter' (Google Fonts) — fallback: system-ui, sans-serif
+  Font Weights: 400 (body), 500 (labels), 600 (headings), 700 (titles), 800 (hero)
+  H1: 2rem / 700 weight
+  H2: 1.5rem / 600 weight
+  H3: 1.25rem / 600 weight
+  Body: 0.9375rem / 400 weight / line-height 1.6
+  Small: 0.875rem
+  Extra small: 0.75rem
+
+━━ BORDER RADIUS ━━
+  --radius-sm:  8px   (buttons, tags, small elements)
+  --radius-md:  12px  (inputs, medium cards)
+  --radius-lg:  16px  (main cards, panels)
+  --radius-xl:  20px  (chat welcome icon, large modals)
+
+━━ SHADOWS ━━
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4)
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.5)
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6)
+  --shadow-glow: 0 0 24px rgba(139,92,246,0.25)  (purple glow on hover)
+
+━━ LAYOUT ━━
+  --sidebar-width: 240px
+  Topbar height: 60px
+  Page padding: 28px (desktop), 20px 16px (mobile)
+
+━━ TRANSITIONS ━━
+  --trans: 0.2s ease   (applied to hover, active states, theme toggle)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4 — COMPLETE FOLDER STRUCTURE (Phase 1 State)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pre-Finance Ai/
+│
+├── START HERE.html                  ← LAUNCHER: Double-click to open project hub
+├── PRE-FINANCE AI - COMPLETE PROJECT INFO.txt  ← THIS FILE
+├── README.md                        ← GitHub readme
+├── requirements.txt                 ← All Python packages
+├── .env.example                     ← Copy to .env and edit
+├── .gitignore                       ← Excludes venv, data, .env
+├── setup.bat                        ← First-time setup script
+├── start_server.bat                 ← Start backend every time
+│
+├── backend/
+│   ├── __init__.py
+│   ├── main.py          ← FastAPI app, CORS, routers, startup, admin seed
+│   ├── config.py        ← All settings (reads from .env)
+│   ├── database.py      ← Async SQLite engine + get_db + init_db
+│   ├── models.py        ← SQLAlchemy ORM: 7 tables
+│   ├── schemas.py       ← Pydantic request/response models
+│   ├── dependencies.py  ← get_current_user, require_admin
+│   │
+│   ├── routers/
+│   │   ├── auth.py       ← /auth/register, /auth/login, /auth/logout, /auth/me, change-password
+│   │   ├── users.py      ← /users/me (GET, PATCH)
+│   │   ├── documents.py  ← /documents (GET, POST, DELETE, GET by id)
+│   │   ├── chat.py       ← /chat/conversations, /chat/ask, rename, delete
+│   │   └── admin.py      ← /admin/stats, users, user status, documents, logs
+│   │
+│   ├── services/        ← EMPTY (Phase 5-6 will add these)
+│   │   ├── document_processor.py  (Phase 5)
+│   │   ├── embedding_service.py   (Phase 6)
+│   │   ├── vector_service.py      (Phase 6)
+│   │   └── llm_service.py         (Phase 6)
+│   │
+│   └── security/
+│       ├── auth.py       ← hash_password, verify_password, create_access_token, decode_token
+│       └── __init__.py
+│
+├── frontend/
+│   ├── login.html        ← Split-panel: brand left, form right. JWT login.
+│   ├── register.html     ← Password strength meter. Argon2 on backend.
+│   ├── forgot-password.html  (Phase 2)
+│   │
+│   ├── pages/
+│   │   ├── dashboard.html   ← Stats grid, recent docs, recent convs, quick actions
+│   │   ├── documents.html   ← Drag-drop upload, card grid, search, delete
+│   │   ├── chat.html        ← Full chat UI: conv list + messages + input + citations
+│   │   ├── profile.html     (Phase 2)
+│   │   ├── settings.html    (Phase 2)
+│   │   │
+│   │   └── admin/
+│   │       ├── dashboard.html  ← 6 stat cards + 2 Chart.js charts + activity log table
+│   │       ├── users.html      ← User table, search, filter, activate/deactivate
+│   │       ├── documents.html  (Phase 2)
+│   │       ├── activity.html   (Phase 2)
+│   │       └── settings.html   (Phase 2)
+│   │
+│   ├── css/
+│   │   ├── style.css      ← Global: design tokens, reset, buttons, cards, toast, modal, utils
+│   │   ├── auth.css       ← Login/register split layout + brand panel + strength meter
+│   │   ├── dashboard.css  ← App shell, sidebar, topbar, stats grid, section headers
+│   │   ├── chat.css       ← Chat layout, bubbles, citations, typing indicator, input area
+│   │   └── admin.css      ← Tables, pagination, log badges, chart cards
+│   │
+│   └── js/
+│       ├── api.js         ← All fetch calls: AuthAPI, DocsAPI, ChatAPI, AdminAPI + route guards
+│       ├── ui.js          ← Toast, confirm modal, Loader, Theme toggle, sidebar init, formatters
+│       ├── auth.js        (Phase 3 — extended)
+│       ├── dashboard.js   (Phase 3)
+│       ├── chat.js        (Phase 7 — full streaming)
+│       ├── documents.js   (Phase 5)
+│       └── admin.js       (Phase 8)
+│
+└── data/
+    ├── uploads/           ← User uploaded files (git-ignored, per-user subdirs)
+    ├── vector_store/      ← FAISS index files (git-ignored)
+    └── prefinance.db      ← SQLite database (git-ignored, auto-created)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5 — DATABASE SCHEMA (All 7 Tables)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TABLE: users
+  id              STRING(36) PK  UUID
+  name            STRING(120)
+  email           STRING(255)    UNIQUE, indexed
+  hashed_password STRING(255)    Argon2id hash
+  role            ENUM           'user' | 'admin'
+  is_active       BOOLEAN        default True
+  avatar_url      STRING(500)    nullable
+  created_at      DATETIME       auto
+  updated_at      DATETIME       auto-update
+  last_login      DATETIME       nullable
+
+TABLE: documents
+  id              STRING(36) PK  UUID
+  user_id         FK → users.id  CASCADE DELETE, indexed
+  filename        STRING(500)    full path on disk
+  original_name   STRING(500)    original upload name
+  file_type       STRING(10)     'pdf' | 'txt' | 'docx'
+  file_size       INTEGER        bytes
+  page_count      INTEGER        default 0
+  status          ENUM           'pending' | 'processing' | 'indexed' | 'failed'
+  error_message   TEXT           nullable
+  created_at      DATETIME
+  updated_at      DATETIME
+
+TABLE: document_chunks
+  id              STRING(36) PK
+  document_id     FK → documents.id  CASCADE DELETE, indexed
+  chunk_index     INTEGER
+  content         TEXT           actual chunk text
+  page_number     INTEGER        nullable
+  faiss_index     INTEGER        row ID in FAISS index, nullable
+
+TABLE: conversations
+  id              STRING(36) PK
+  user_id         FK → users.id  CASCADE DELETE, indexed
+  title           STRING(300)    default "New Conversation"
+  created_at      DATETIME
+  updated_at      DATETIME
+
+TABLE: messages
+  id              STRING(36) PK
+  conversation_id FK → conversations.id  CASCADE DELETE, indexed
+  role            ENUM           'user' | 'assistant'
+  content         TEXT
+  sources         TEXT           JSON string of citation list (nullable)
+  created_at      DATETIME
+
+TABLE: activity_logs
+  id              STRING(36) PK
+  user_id         FK → users.id  SET NULL on delete, nullable, indexed
+  action          STRING(100)    LOGIN | LOGOUT | REGISTER | UPLOAD | DELETE | CHANGE_PASSWORD
+  detail          TEXT           nullable
+  ip_address      STRING(45)     nullable (supports IPv6)
+  created_at      DATETIME
+
+TABLE: system_settings
+  key             STRING(100) PK
+  value           TEXT
+  updated_at      DATETIME
+
+Default system_settings rows (seeded at startup):
+  app_name            = "Pre-Finance AI"
+  allow_registration  = "true"
+  max_upload_mb       = "50"
+
+Relationships:
+  users → documents (one to many)
+  users → conversations (one to many)
+  users → activity_logs (one to many)
+  documents → document_chunks (one to many)
+  conversations → messages (one to many)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6 — ALL API ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+METHOD  | ENDPOINT                           | AUTH     | PURPOSE
+────────┼────────────────────────────────────┼──────────┼──────────────────────────
+POST    | /auth/register                     | None     | Create account
+POST    | /auth/login                        | None     | Login → JWT token
+POST    | /auth/logout                       | User     | Log logout event
+GET     | /auth/me                           | User     | Get current user
+POST    | /auth/change-password              | User     | Change password
+GET     | /users/me                          | User     | Get profile
+PATCH   | /users/me                          | User     | Update name/avatar
+GET     | /documents                         | User     | List my documents
+POST    | /documents                         | User     | Upload file
+GET     | /documents/{id}                    | User     | Get document details
+DELETE  | /documents/{id}                    | User     | Delete document
+GET     | /chat/conversations                | User     | List conversations
+GET     | /chat/conversations/{id}           | User     | Get conversation + messages
+PATCH   | /chat/conversations/{id}/rename    | User     | Rename conversation
+DELETE  | /chat/conversations/{id}           | User     | Delete conversation
+POST    | /chat/ask                          | User     | Ask AI question (RAG)
+GET     | /admin/stats                       | Admin    | Platform statistics
+GET     | /admin/users                       | Admin    | All users list
+PATCH   | /admin/users/{id}/status           | Admin    | Activate/deactivate user
+GET     | /admin/documents                   | Admin    | All documents + owner info
+GET     | /admin/logs?limit=100              | Admin    | Activity logs
+GET     | /health                            | None     | Server health check
+GET     | /                                  | None     | API running confirmation
+GET     | /docs                              | None     | Swagger UI (FastAPI auto)
+
+AUTH column:
+  None  = public endpoint
+  User  = requires valid JWT (any role)
+  Admin = requires valid JWT + role == "admin"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7 — SECURITY IMPLEMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Password:
+  Algorithm: Argon2id (via passlib)
+  Never stored plain text, never logged
+  Validation: min 8 chars, 1 uppercase, 1 digit (Pydantic + frontend)
+
+JWT:
+  Library: python-jose[cryptography]
+  Algorithm: HS256
+  Secret: SECRET_KEY in .env (min 32 chars)
+  Expiry: 60 minutes (ACCESS_TOKEN_EXPIRE_MINUTES)
+  Payload: { sub: user_id, role: "user"|"admin", exp: timestamp }
+  Storage client-side: localStorage (key: pf_token)
+
+Admin Account:
+  Created ONLY by seed_admin() at startup — never via public /auth/register
+  Controlled by ADMIN_EMAIL + ADMIN_PASSWORD in .env
+  Role "admin" cannot be self-assigned
+
+Role Guards:
+  get_current_user() — verifies JWT, checks user exists, checks is_active
+  require_admin()    — calls get_current_user() then checks role == "admin"
+  Frontend guards: requireAuth(), requireAdmin() in api.js (redirect on fail)
+  NOTE: Frontend guards are convenience only. Backend always verifies independently.
+
+Document Privacy:
+  Every document stores user_id
+  GET/DELETE check: doc.user_id == current_user.id OR current_user.role == "admin"
+  Users cannot access each other's documents, even by guessing IDs
+
+File Uploads:
+  Extension whitelist: .pdf, .txt, .docx
+  MIME type check: application/pdf, text/plain, .docx MIME
+  Max size: 50 MB (configurable via MAX_FILE_SIZE_MB in .env)
+  Stored with UUID filename (original name saved in DB only)
+  Served as downloads only — not executed
+
+CORS:
+  Allowed origins: http://localhost:5500, http://127.0.0.1:5500
+  Additional origins configurable via FRONTEND_ORIGIN in .env
+  Credentials: allowed
+
+Input Sanitization:
+  All inputs go through Pydantic validators on the backend
+  HTML displayed in frontend uses escHtml() to prevent XSS
+  Document content treated as untrusted — not passed raw to prompts without limits
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8 — .ENV CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File: .env  (copy from .env.example, never commit to git)
+
+SECRET_KEY=change-this-to-a-long-random-secret-key-minimum-32-chars
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+
+DATABASE_URL=sqlite+aiosqlite:///./data/prefinance.db
+
+ADMIN_EMAIL=admin@prefinance.ai
+ADMIN_PASSWORD=Admin@123456
+ADMIN_NAME=System Admin
+
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:1.5b
+
+UPLOAD_DIR=data/uploads
+VECTOR_STORE_DIR=data/vector_store
+MAX_FILE_SIZE_MB=50
+
+EMBEDDING_MODEL=all-MiniLM-L6-v2
+
+FRONTEND_ORIGIN=http://localhost:5500
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9 — HOW TO RUN (Every Time)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FIRST TIME ONLY:
+  1. Run: setup.bat
+     (creates venv, installs all packages from requirements.txt, copies .env)
+  2. Install Ollama from https://ollama.ai
+  3. Run: ollama pull qwen2.5:1.5b
+     (downloads ~1GB model, one time)
+
+EVERY TIME:
+  Terminal 1: ollama serve          (keep open — AI model server)
+  Terminal 2: start_server.bat      (keep open — FastAPI on port 8000)
+  Browser:    Open "START HERE.html" (double-click) OR
+              Open frontend/login.html with VS Code Live Server (port 5500)
+
+URLs:
+  Login:           http://localhost:5500/frontend/login.html
+  Register:        http://localhost:5500/frontend/register.html
+  User Dashboard:  http://localhost:5500/frontend/pages/dashboard.html
+  AI Chat:         http://localhost:5500/frontend/pages/chat.html
+  Documents:       http://localhost:5500/frontend/pages/documents.html
+  Admin:           http://localhost:5500/frontend/pages/admin/dashboard.html
+  API Swagger:     http://localhost:8000/docs
+  Health check:    http://localhost:8000/health
+
+Credentials:
+  Admin email:    admin@prefinance.ai
+  Admin password: Admin@123456
+  (Change these in .env before sharing project)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10 — REQUIREMENTS.TXT (All packages)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+sqlalchemy==2.0.30
+aiosqlite==0.20.0
+python-jose[cryptography]==3.3.0
+passlib[argon2]==1.7.4
+python-multipart==0.0.9
+pydantic==2.7.1
+pydantic-settings==2.2.1
+pymupdf==1.24.3
+python-docx==1.1.2
+sentence-transformers==2.7.0
+faiss-cpu==1.8.0
+httpx==0.27.0
+python-dotenv==1.0.1
+aiofiles==23.2.1
+Pillow==10.3.0
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 11 — FRONTEND: WHAT EACH PAGE DOES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+login.html
+  - Two-column: brand panel (left) + form (right)
+  - Brand panel has purple glow orbs, 4 feature bullets
+  - Form: email + password + show/hide toggle
+  - On success → redirects admin to admin/dashboard, user to dashboard
+  - Calls: POST /auth/login → saves token + user to localStorage
+
+register.html
+  - Same two-column layout
+  - Password strength meter (4 segments: weak/fair/good/strong)
+  - Validation: name required, valid email, 8+ chars, passwords match
+  - Calls: POST /auth/register → redirects to login.html
+
+pages/dashboard.html
+  - Sidebar with active state on "Overview"
+  - 4 stat cards: total docs, conversations, indexed docs, AI model info
+  - Recent documents list (last 5)
+  - Recent conversations list (last 5)
+  - Quick action buttons: Upload / New Chat / Edit Profile
+  - Calls: GET /documents, GET /chat/conversations
+
+pages/documents.html
+  - Drag-and-drop upload zone
+  - Browse button for file picker
+  - Upload progress bar
+  - Document cards grid: icon, name, type, size, status badge, page count
+  - Search input + status filter dropdown
+  - Delete button with confirmation modal
+  - Calls: GET /documents, POST /documents, DELETE /documents/{id}
+
+pages/chat.html
+  - Left panel: conversation list (search, rename, delete per item)
+  - Right: chat messages area + input
+  - Welcome screen with 4 suggested questions
+  - Message bubbles: user (purple gradient) + AI (dark card)
+  - Citations panel below AI answers
+  - Copy button on AI messages
+  - Typing indicator (3 bouncing dots)
+  - New Chat button clears state
+  - Loads conversation by ?id= query param from dashboard
+  - Calls: GET /chat/conversations, GET /chat/conversations/{id},
+           POST /chat/ask, PATCH rename, DELETE
+
+pages/admin/dashboard.html
+  - Admin sidebar (red-orange gradient logo)
+  - "Admin Mode" badge in topbar
+  - 6 stat cards
+  - Doughnut chart: active vs inactive users (Chart.js)
+  - Bar chart: document status breakdown (Chart.js)
+  - Activity log table: last 10 entries
+  - Calls: GET /admin/stats, GET /admin/logs
+
+pages/admin/users.html
+  - User table: avatar initials, name, email, role badge, status badge
+  - Joined date + last login
+  - Activate/Deactivate button per row (skips own account)
+  - Search by name/email + filter by role + filter by status
+  - Calls: GET /admin/users, PATCH /admin/users/{id}/status
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 12 — FRONTEND JS: api.js and ui.js
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+api.js — API_BASE = 'http://localhost:8000'
+  Auth object:
+    Auth.getToken()         reads localStorage key 'pf_token'
+    Auth.setToken(t)        saves token
+    Auth.getUser()          parses localStorage 'pf_user' JSON
+    Auth.setUser(u)         saves user object
+    Auth.isLoggedIn()       true if token exists
+    Auth.isAdmin()          true if user.role === 'admin'
+    Auth.save(tokenResp)    saves both token and user
+    Auth.clear()            removes both
+
+  apiFetch(path, options)   core wrapper: adds Bearer header, handles 401 auto-logout
+  apiUpload(path, formData) for file uploads (no Content-Type so browser sets boundary)
+
+  AuthAPI.register(name, email, password)
+  AuthAPI.login(email, password)
+  AuthAPI.logout()
+  AuthAPI.me()
+  AuthAPI.changePassword(current, new)
+
+  DocsAPI.list()
+  DocsAPI.upload(file)
+  DocsAPI.delete(id)
+  DocsAPI.get(id)
+
+  ChatAPI.listConversations()
+  ChatAPI.getConversation(id)
+  ChatAPI.rename(id, title)
+  ChatAPI.delete(id)
+  ChatAPI.ask(question, conversation_id)
+
+  AdminAPI.stats()
+  AdminAPI.users()
+  AdminAPI.setUserStatus(id, is_active)
+  AdminAPI.documents()
+  AdminAPI.logs(limit)
+
+  Route guards:
+    requireAuth()       — redirects to login.html if not logged in
+    requireAdmin()      — redirects if not logged in or not admin
+    redirectIfLoggedIn() — redirects logged-in users away from login/register
+
+ui.js
+  Toast.success/error/warning/info(message, duration)
+    — Shows toast at bottom-right, auto-removes after duration ms
+    — Style: dark card + colored left border
+
+  confirm(title, message) → Promise<boolean>
+    — Modal overlay with Cancel + Confirm buttons
+    — Returns true/false
+
+  Loader.show() / Loader.hide()
+    — Full-page overlay with spinner
+
+  Theme.get() / Theme.apply(theme) / Theme.toggle() / Theme.init()
+    — Saves to localStorage key 'pf_theme'
+    — Applies data-theme="dark"|"light" to <html>
+
+  initSidebarToggle()   — mobile hamburger menu
+  autoResize(el)        — textarea auto-height
+  formatDate(iso)       — "Jan 15, 2024"
+  formatDateTime(iso)   — "Jan 15, 2:30 PM"
+  formatBytes(bytes)    — "1.2 MB"
+  initials(name)        — "John Doe" → "JD"
+  setActiveNav(page)    — adds .active class to matching nav item
+  renderSidebarUser()   — fills name/role/initials from Auth.getUser()
+  handleLogout()        — calls AuthAPI.logout() then Auth.clear() then redirect
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 13 — DEPLOYMENT OPTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RECOMMENDATION: Deploy to Railway (best free option for this stack)
+
+━━ OPTION 1: RAILWAY (RECOMMENDED) ━━
+  Website:  https://railway.app
+  Free tier: $5 credit/month (enough for small demo)
+  Supports:  Python, FastAPI, persistent SQLite, file storage
+  Steps:
+    1. Push project to GitHub (backend only, or full repo)
+    2. Connect Railway to GitHub repo
+    3. Set environment variables in Railway dashboard (copy from .env)
+    4. Railway auto-detects Python + runs: uvicorn backend.main:app
+    5. Frontend: deploy separately to Netlify (free, drag-drop HTML folder)
+    6. Update FRONTEND_ORIGIN in Railway env vars to Netlify URL
+  Limitation: Ollama (local LLM) cannot run on Railway free tier.
+              For demo without AI: mock AI responses or use OpenAI API key temporarily.
+
+━━ OPTION 2: RENDER ━━
+  Website:  https://render.com
+  Free tier: 750 hours/month (spins down after 15 min inactivity)
+  Steps same as Railway
+  Problem: Disk storage is ephemeral on free plan — SQLite data lost on restart
+  Solution: Use Render's persistent disk ($7/month) OR switch DB to PostgreSQL (free)
+
+━━ OPTION 3: VERCEL (Frontend only) + Railway (Backend) ━━
+  Vercel: Deploy frontend/  folder
+  Railway: Deploy backend/  folder
+  Best for demos and portfolios
+
+━━ OPTION 4: LOCAL DEMO (For Interviews) ━━
+  This is the BEST option for AI features.
+  Ollama runs locally → AI actually works
+  Show on your laptop during interview or screen share
+  Run: start_server.bat + ollama serve + Live Server
+  Zero cost, full features, full AI
+
+━━ OPTION 5: VPS (Advanced) ━━
+  DigitalOcean ($6/month), Hetzner (€3.5/month)
+  Full control, can install Ollama
+  Best for production use
+
+SUMMARY TABLE:
+  Local laptop  → Best for AI features, interviews, development
+  Railway       → Best free cloud option, easy deployment
+  Render        → Alternative to Railway, free but cold starts
+  Vercel        → Frontend only (static HTML)
+  VPS           → Production-ready, full Ollama support
+
+IMPORTANT: Ollama local LLM cannot run on free cloud platforms.
+  On cloud: either skip AI (show architecture), use a small cloud LLM API,
+  or pay for a VPS that supports GPU or at least CPU inference.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 14 — DEVELOPMENT PHASE TRACKER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[✅ DONE] Phase 1 — Project Foundation
+  Folder structure, Python packages, FastAPI app, SQLite models,
+  all API endpoints (stubs), complete frontend design system,
+  login/register/dashboard/documents/chat/admin pages built and styled,
+  api.js and ui.js complete, security layer complete, admin auto-seed.
+
+[▶ NEXT] Phase 2 — Remaining Frontend Pages
+  forgot-password.html, profile.html, settings.html
+  admin/documents.html, admin/activity.html, admin/settings.html
+  Custom 404 page, custom 500 error page
+  Dark/light theme polish, mobile responsive fixes
+
+[ ] Phase 3 — Authentication Full Test
+  Test all auth endpoints with Postman / Swagger
+  Verify JWT expiry, role guards, password change
+  Forgot password flow (recovery code for offline)
+
+[ ] Phase 4 — Database Testing
+  Verify all relationships, cascade deletes, seed data
+  Test user isolation (user A cannot see user B data)
+
+[ ] Phase 5 — Document Processing
+  Implement document_processor.py:
+    PDF → PyMuPDF text extraction with page numbers
+    DOCX → python-docx extraction
+    TXT → plain read
+  Chunking with RecursiveCharacterTextSplitter
+  Save chunks to document_chunks table
+  Update document status: pending → processing → indexed
+
+[ ] Phase 6 — RAG Implementation
+  embedding_service.py: load all-MiniLM-L6-v2, generate embeddings
+  vector_service.py: FAISS index create/save/load/search
+  llm_service.py: Ollama API calls (httpx async)
+  Wire /chat/ask to full RAG pipeline
+  Return real answers with source citations
+
+[ ] Phase 7 — Full Chat System
+  Streaming responses (SSE or WebSocket)
+  Auto-generate conversation title from first question
+  Copy answer, regenerate response buttons
+  Suggested questions based on document content
+
+[ ] Phase 8 — Admin Panel Complete
+  admin/documents.html — all documents + bulk delete
+  admin/activity.html — full paginated log table
+  admin/settings.html — toggle registration, change limits
+  System health monitoring
+
+[ ] Phase 9 — Testing + Security Hardening
+  Rate limiting on auth endpoints
+  File content sanitization before embedding
+  Error handling for Ollama offline scenario
+  Performance test with large PDFs
+
+[ ] Phase 10 — Deploy + Documentation
+  GitHub repo with full README
+  Screenshots of all pages
+  Railway deployment
+  Installation video / guide
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 15 — CHANGE LOG (Update this every time you make changes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DATE          | PHASE | CHANGE DESCRIPTION
+──────────────┼───────┼────────────────────────────────────────────────────────────
+Phase 2 Update| P2    | Added PostgreSQL support (asyncpg driver) alongside SQLite
+              |       | config.py: is_postgres property, allowed_origins list
+              |       | database.py: smart engine factory (SQLite vs PostgreSQL)
+              |       | requirements.txt: added asyncpg==0.29.0, alembic==1.13.1
+              |       | Admin panel completed: documents.html, activity.html, settings.html
+              |       |   documents.html: summary cards, paginated table, type/status filter
+              |       |   activity.html: action count cards, paginated log table, limit selector
+              |       |   settings.html: app settings form, system stats, danger zone
+              |       | Deployment files added:
+              |       |   Dockerfile (Python 3.11-slim)
+              |       |   railway.toml (Railway deploy config)
+              |       |   netlify.toml (Frontend publish config)
+              |       |   frontend/index.html (redirect to login.html)
+              |       |   DEPLOY GUIDE.html (step-by-step Supabase+Railway+Netlify guide)
+              |       | FREE deployment stack confirmed:
+              |       |   Supabase = PostgreSQL free forever
+              |       |   Railway  = $5 credit/month (~500 hours)
+              |       |   Netlify  = Frontend free forever
+──────────────┼───────┼────────────────────────────────────────────────────────────
+Phase 1 Init  | P1    | Project created from scratch
+              |       | Backend: config, database, models (7 tables), schemas,
+              |       |   security/auth (Argon2+JWT), dependencies, all 5 routers,
+              |       |   main.py with admin auto-seed
+              |       | Frontend: style.css (full design system), auth.css,
+              |       |   dashboard.css, chat.css, admin.css
+              |       |   login.html, register.html, dashboard.html,
+              |       |   documents.html, chat.html,
+              |       |   admin/dashboard.html, admin/users.html
+              |       |   api.js (all API calls), ui.js (Toast/Modal/Theme/Utils)
+              |       | Launcher: START HERE.html (live server status + all links)
+              |       | Config: requirements.txt, .env.example, .gitignore,
+              |       |   setup.bat, start_server.bat, README.md
+              |       | Python syntax check: ALL PASS ✅
+──────────────┼───────┼────────────────────────────────────────────────────────────
+(add new rows above this line as you make changes)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 16 — IF CODE IS LOST: HOW TO REBUILD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Create folder: "Pre-Finance Ai" on Desktop
+2. Tell AI assistant (Kiro/ChatGPT):
+   "Build Pre-Finance AI project. It is a full-stack offline AI document
+   intelligence platform. Tech stack: FastAPI + SQLite + SQLAlchemy (async) +
+   Argon2id + JWT + Ollama (qwen2.5:1.5b) + Sentence Transformers (all-MiniLM-L6-v2)
+   + FAISS + PyMuPDF + python-docx. Frontend: vanilla HTML/CSS/JS (no frameworks).
+   Design: dark navy theme — bg #0B1120, cards #151C2E, accent purple #8B5CF6,
+   blue #3B82F6, font Inter. See PRE-FINANCE AI - COMPLETE PROJECT INFO.txt for
+   exact structure, all file names, all API endpoints, all CSS variables, and
+   database schema."
+
+3. Provide this info file to the AI — it contains everything needed.
+4. Rebuild phase by phase as described in Section 14.
+5. Use Section 15 (Change Log) to know what was already built.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 17 — HARDWARE NOTES (Your Machine: 8GB RAM, RTX 3050 4GB)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Model         | VRAM needed | RAM needed | Fits your machine?
+──────────────┼─────────────┼────────────┼────────────────────
+qwen2.5:1.5b  | ~1.0 GB     | ~2 GB      | ✅ YES (primary choice)
+qwen2.5:3b    | ~2.0 GB     | ~4 GB      | ✅ YES
+llama3.2:3b   | ~2.0 GB     | ~4 GB      | ✅ YES
+mistral:7b    | ~4.0 GB     | ~8 GB      | ⚠ Borderline (may be slow)
+llama3:8b     | ~5.0 GB     | ~8 GB      | ❌ Too large for 4GB VRAM
+
+Embedding model: all-MiniLM-L6-v2 — CPU only, ~90MB download, very fast.
+Run one model at a time. Close other GPU apps before starting Ollama.
+
+Pull command: ollama pull qwen2.5:1.5b
+Test command: ollama run qwen2.5:1.5b "Hello, test"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+END OF FILE — Keep this file safe. Update Section 15 after every change session.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pre-Finance AI – Project Launcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0B1120;
+      --card:      #151C2E;
+      --elevated:  #1A2235;
+      --border:    #1E293B;
+      --purple:    #8B5CF6;
+      --blue:      #3B82F6;
+      --green:     #22C55E;
+      --yellow:    #F59E0B;
+      --red:       #EF4444;
+      --text:      #F1F5F9;
+      --muted:     #64748B;
+      --secondary: #94A3B8;
+      --grad:      linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 24px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .logo-icon {
+      width: 52px; height: 52px;
+      background: var(--grad);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+    }
+    .logo-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header p {
+      color: var(--secondary);
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .badge-purple { background: rgba(139,92,246,.12); color: var(--purple); border-color: rgba(139,92,246,.3); }
+    .badge-blue   { background: rgba(59,130,246,.12);  color: var(--blue);   border-color: rgba(59,130,246,.3); }
+    .badge-green  { background: rgba(34,197,94,.12);   color: var(--green);  border-color: rgba(34,197,94,.3); }
+
+    /* ── Section title ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    /* ── Launch card ── */
+    .launch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto 40px;
+    }
+    .launch-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all .2s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .launch-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      transition: border-color .2s;
+    }
+    .launch-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.5); }
+    .launch-card:hover::before { border-color: rgba(139,92,246,.4); }
+    .launch-card.admin:hover::before { border-color: rgba(239,68,68,.4); }
+    .launch-card.api:hover::before   { border-color: rgba(34,197,94,.4); }
+
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+    }
+    .icon-user  { background: rgba(139,92,246,.12); }
+    .icon-admin { background: rgba(239,68,68,.12); }
+    .icon-api   { background: rgba(34,197,94,.12); }
+    .icon-docs  { background: rgba(59,130,246,.12); }
+
+    .card-title { font-size: 1rem; font-weight: 700; }
+    .card-url {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: monospace;
+      background: var(--elevated);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      word-break: break-all;
+    }
+    .card-desc { font-size: 0.8125rem; color: var(--secondary); line-height: 1.5; }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .tag-purple { background: rgba(139,92,246,.12); color: var(--purple); }
+    .tag-blue   { background: rgba(59,130,246,.12);  color: var(--blue); }
+    .tag-green  { background: rgba(34,197,94,.12);   color: var(--green); }
+    .tag-red    { background: rgba(239,68,68,.12);   color: var(--red); }
+    .tag-yellow { background: rgba(245,158,11,.12);  color: var(--yellow); }
+
+    .open-btn {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: opacity .2s;
+      text-decoration: none;
+      width: fit-content;
+    }
+    .open-btn:hover { opacity: .85; }
+    .btn-purple { background: var(--grad); color: #fff; }
+    .btn-red    { background: linear-gradient(135deg,#EF4444,#F59E0B); color: #fff; }
+    .btn-green  { background: linear-gradient(135deg,#22C55E,#06B6D4); color: #fff; }
+    .btn-blue   { background: linear-gradient(135deg,#3B82F6,#6366F1); color: #fff; }
+
+    /* ── Credentials box ── */
+    .creds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto 40px;
+    }
+    .creds-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+    }
+    .creds-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cred-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cred-row:last-child { border-bottom: none; }
+    .cred-key { font-size: 0.8rem; color: var(--muted); }
+    .cred-val {
+      font-size: 0.8125rem;
+      font-family: monospace;
+      background: var(--elevated);
+      padding: 3px 10px;
+      border-radius: 6px;
+      color: var(--purple);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: background .2s;
+    }
+    .cred-val:hover { background: rgba(139,92,246,.1); }
+
+    /* ── Server status ── */
+    .status-bar {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .status-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-green { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+    .dot-red   { background: var(--red); }
+    .dot-yellow{ background: var(--yellow); animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; } 50% { opacity: .4; }
+    }
+    .status-text { font-size: 0.875rem; font-weight: 600; }
+    .status-sub  { font-size: 0.75rem;  color: var(--muted); }
+    .refresh-btn {
+      margin-left: auto;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      color: var(--secondary);
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .refresh-btn:hover { color: var(--text); border-color: var(--purple); }
+
+    /* ── Steps ── */
+    .steps-box {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .steps-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 20px; }
+    .steps-list { display: flex; flex-direction: column; gap: 12px; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .step-num.done { background: linear-gradient(135deg,#22C55E,#06B6D4); }
+    .step-content { flex: 1; }
+    .step-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 2px; }
+    .step-code {
+      font-family: monospace;
+      font-size: 0.8rem;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--green);
+      margin-top: 6px;
+      cursor: pointer;
+      transition: background .2s;
+      word-break: break-all;
+    }
+    .step-code:hover { background: rgba(34,197,94,.08); }
+
+    /* ── Phase tracker ── */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      max-width: 1100px;
+      margin: 0 auto 48px;
+    }
+    .phase-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .phase-status {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .ps-done   { background: rgba(34,197,94,.15);  color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+    .ps-active { background: rgba(139,92,246,.15); color: var(--purple); border: 1px solid rgba(139,92,246,.3); animation: pulse 2s infinite; }
+    .ps-todo   { background: var(--elevated); color: var(--muted); border: 1px solid var(--border); }
+    .phase-info { flex: 1; }
+    .phase-name { font-size: 0.8rem; font-weight: 600; }
+    .phase-sub  { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 24px 0 8px;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .creds-grid { grid-template-columns: 1fr; }
+      .launch-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-name">Pre-Finance AI</div>
+    </div>
+    <p>Offline AI Document Intelligence · Full-Stack SaaS · Local LLM</p>
+    <div class="badge-row">
+      <span class="badge badge-purple">FastAPI + Python</span>
+      <span class="badge badge-blue">SQLite + JWT</span>
+      <span class="badge badge-green">Ollama · Offline AI</span>
+      <span class="badge badge-purple">FAISS Vector DB</span>
+      <span class="badge badge-blue">Sentence Transformers</span>
+    </div>
+  </div>
+
+  <!-- ── Server Status ── -->
+  <div class="section-label" style="max-width:1100px;margin:0 auto 10px">🔌 Server Status</div>
+  <div class="status-bar">
+    <div class="status-dot" id="status-dot" style="background:var(--yellow)"></div>
+    <div>
+      <div class="status-text" id="status-text">Checking backend…</div>
+      <div class="status-sub" id="status-sub">http://localhost:8000</div>
+    </div>
+    <button class="refresh-btn" onclick="checkServer()">↻ Refresh</button>
+  </div>
+
+  <!-- ── Launch Links ── -->
+  <div class="section-label" style="max-width:1100px;margin:0 auto 10px">🚀 Open Application</div>
+  <div class="launch-grid">
+
+    <!-- User Login -->
+    <div class="launch-card" onclick="openLink('frontend/login.html')">
+      <div class="card-icon icon-user">🔐</div>
+      <div class="card-title">User Login</div>
+      <div class="card-url">frontend/login.html</div>
+      <div class="card-desc">Main login page. Registered users sign in here to access their documents and AI chat.</div>
+      <div class="card-tags">
+        <span class="tag tag-purple">Auth</span>
+        <span class="tag tag-blue">JWT</span>
+        <span class="tag tag-green">Argon2id</span>
+      </div>
+      <span class="open-btn btn-purple">Open Login →</span>
+    </div>
+
+    <!-- Register -->
+    <div class="launch-card" onclick="openLink('frontend/register.html')">
+      <div class="card-icon icon-user">✍️</div>
+      <div class="card-title">Register Account</div>
+      <div class="card-url">frontend/register.html</div>
+      <div class="card-desc">Create a new user account. Password strength meter included. Only "user" role — admin is seeded manually.</div>
+      <div class="card-tags">
+        <span class="tag tag-purple">Register</span>
+        <span class="tag tag-yellow">Validation</span>
+      </div>
+      <span class="open-btn btn-purple">Open Register →</span>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="launch-card admin" onclick="openLink('frontend/pages/admin/dashboard.html')">
+      <div class="card-icon icon-admin">🛡️</div>
+      <div class="card-title">Admin Dashboard</div>
+      <div class="card-url">frontend/pages/admin/dashboard.html</div>
+      <div class="card-desc">Full admin panel — user management, stats, Chart.js analytics, activity logs. Protected by role guard.</div>
+      <div class="card-tags">
+        <span class="tag tag-red">Admin Only</span>
+        <span class="tag tag-yellow">Chart.js</span>
+        <span class="tag tag-blue">Stats</span>
+      </div>
+      <span class="open-btn btn-red">Open Admin →</span>
+    </div>
+
+    <!-- User Dashboard -->
+    <div class="launch-card" onclick="openLink('frontend/pages/dashboard.html')">
+      <div class="card-icon icon-docs">📊</div>
+      <div class="card-title">User Dashboard</div>
+      <div class="card-url">frontend/pages/dashboard.html</div>
+      <div class="card-desc">User overview: document count, conversation count, recent files, quick action buttons.</div>
+      <div class="card-tags">
+        <span class="tag tag-purple">Dashboard</span>
+        <span class="tag tag-blue">Stats</span>
+      </div>
+      <span class="open-btn btn-blue">Open Dashboard →</span>
+    </div>
+
+    <!-- AI Chat -->
+    <div class="launch-card" onclick="openLink('frontend/pages/chat.html')">
+      <div class="card-icon icon-user">💬</div>
+      <div class="card-title">AI Chat</div>
+      <div class="card-url">frontend/pages/chat.html</div>
+      <div class="card-desc">Ask questions about uploaded documents. Source citations with page numbers. Conversation history. Rename/delete chats.</div>
+      <div class="card-tags">
+        <span class="tag tag-purple">RAG</span>
+        <span class="tag tag-green">Citations</span>
+        <span class="tag tag-blue">Ollama</span>
+      </div>
+      <span class="open-btn btn-purple">Open Chat →</span>
+    </div>
+
+    <!-- Documents -->
+    <div class="launch-card" onclick="openLink('frontend/pages/documents.html')">
+      <div class="card-icon icon-docs">📂</div>
+      <div class="card-title">Documents</div>
+      <div class="card-url">frontend/pages/documents.html</div>
+      <div class="card-desc">Drag-drop upload for PDF, DOCX, TXT. Card grid view, search, status filters. Per-user isolation.</div>
+      <div class="card-tags">
+        <span class="tag tag-purple">Upload</span>
+        <span class="tag tag-yellow">PyMuPDF</span>
+        <span class="tag tag-green">FAISS</span>
+      </div>
+      <span class="open-btn btn-blue">Open Documents →</span>
+    </div>
+
+    <!-- API Docs -->
+    <div class="launch-card api" onclick="openLink('http://localhost:8000/docs')">
+      <div class="card-icon icon-api">⚡</div>
+      <div class="card-title">API Explorer (Swagger)</div>
+      <div class="card-url">http://localhost:8000/docs</div>
+      <div class="card-desc">FastAPI auto-generated Swagger UI. Test all endpoints directly — auth, documents, chat, admin. Backend must be running.</div>
+      <div class="card-tags">
+        <span class="tag tag-green">FastAPI</span>
+        <span class="tag tag-blue">Swagger</span>
+        <span class="tag tag-yellow">REST API</span>
+      </div>
+      <span class="open-btn btn-green">Open API Docs →</span>
+    </div>
+
+    <!-- Admin Users -->
+    <div class="launch-card admin" onclick="openLink('frontend/pages/admin/users.html')">
+      <div class="card-icon icon-admin">👥</div>
+      <div class="card-title">Admin – User Management</div>
+      <div class="card-url">frontend/pages/admin/users.html</div>
+      <div class="card-desc">View all registered users, activate or deactivate accounts, filter by role and status.</div>
+      <div class="card-tags">
+        <span class="tag tag-red">Admin Only</span>
+        <span class="tag tag-blue">CRUD</span>
+      </div>
+      <span class="open-btn btn-red">Open Users →</span>
+    </div>
+
+  </div>
+
+  <!-- ── Credentials ── -->
+  <div class="section-label" style="max-width:1100px;margin:0 auto 10px">🔑 Login Credentials</div>
+  <div class="creds-grid">
+    <div class="creds-card">
+      <div class="creds-title">🛡️ Admin Account <span class="badge badge-red" style="font-size:.65rem">Pre-seeded</span></div>
+      <div class="cred-row">
+        <span class="cred-key">Email</span>
+        <span class="cred-val" onclick="copy(this,'admin@prefinance.ai')" title="Click to copy">admin@prefinance.ai</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Password</span>
+        <span class="cred-val" onclick="copy(this,'Admin@123456')" title="Click to copy">Admin@123456</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Role</span>
+        <span class="cred-val" style="color:var(--red)">admin</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Set in</span>
+        <span class="cred-val">.env → ADMIN_EMAIL / ADMIN_PASSWORD</span>
+      </div>
+    </div>
+    <div class="creds-card">
+      <div class="creds-title">👤 Regular User <span class="badge badge-blue" style="font-size:.65rem">Create via Register</span></div>
+      <div class="cred-row">
+        <span class="cred-key">Register at</span>
+        <span class="cred-val" style="cursor:default">frontend/register.html</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Role</span>
+        <span class="cred-val" style="color:var(--blue)">user</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Password rule</span>
+        <span class="cred-val" style="cursor:default">Min 8 chars + uppercase + digit</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-key">Note</span>
+        <span class="cred-val" style="color:var(--green);cursor:default">Admins cannot be created via public register</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── How to start ── -->
+  <div class="section-label" style="max-width:1100px;margin:0 auto 10px">⚙️ How to Start Every Time</div>
+  <div class="steps-box">
+    <div class="steps-title">Run these in order — takes about 10 seconds</div>
+    <div class="steps-list">
+
+      <div class="step">
+        <div class="step-num done">1</div>
+        <div class="step-content">
+          <div class="step-title">✅ Setup (first time only — already done)</div>
+          <div class="step-code" onclick="copyCode(this)">setup.bat</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Start Ollama (AI model server)</div>
+          <div class="step-code" onclick="copyCode(this)">ollama serve</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:4px">In a separate terminal. Must stay running for AI answers.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Start FastAPI backend</div>
+          <div class="step-code" onclick="copyCode(this)">start_server.bat</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:4px">Runs on http://localhost:8000 — keep this terminal open.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Open frontend — VS Code Live Server</div>
+          <div style="font-size:.8rem;color:var(--secondary);margin-top:4px">Right-click <code style="background:var(--elevated);padding:2px 6px;border-radius:4px">frontend/login.html</code> → "Open with Live Server" (port 5500)</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">OR open this launcher file directly in browser</div>
+          <div class="step-code" onclick="copyCode(this)">START HERE.html → double click to open in browser</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Phase Tracker ── -->
+  <div class="section-label" style="max-width:1100px;margin:0 auto 10px">📋 Development Phase Tracker</div>
+  <div class="phase-grid">
+    <div class="phase-card"><div class="phase-status ps-done">✓</div><div class="phase-info"><div class="phase-name">Phase 1</div><div class="phase-sub">Foundation + Backend + UI</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-active">▶</div><div class="phase-info"><div class="phase-name">Phase 2</div><div class="phase-sub">Complete Frontend Pages</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">3</div><div class="phase-info"><div class="phase-name">Phase 3</div><div class="phase-sub">Auth System Full</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">4</div><div class="phase-info"><div class="phase-name">Phase 4</div><div class="phase-sub">Database Relations</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">5</div><div class="phase-info"><div class="phase-name">Phase 5</div><div class="phase-sub">Document Processing</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">6</div><div class="phase-info"><div class="phase-name">Phase 6</div><div class="phase-sub">RAG + FAISS + Ollama</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">7</div><div class="phase-info"><div class="phase-name">Phase 7</div><div class="phase-sub">Full Chat System</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">8</div><div class="phase-info"><div class="phase-name">Phase 8</div><div class="phase-sub">Admin Panel Complete</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">9</div><div class="phase-info"><div class="phase-name">Phase 9</div><div class="phase-sub">Testing + Security</div></div></div>
+    <div class="phase-card"><div class="phase-status ps-todo">10</div><div class="phase-info"><div class="phase-name">Phase 10</div><div class="phase-sub">Deploy + README</div></div></div>
+  </div>
+
+  <div class="footer">
+    Pre-Finance AI · Phase 1 Complete · Built with FastAPI + SQLite + Ollama + FAISS · Offline · Free · Private
+  </div>
+
+<script>
+  function openLink(url) {
+    // If it's a relative frontend link, open relative to this file's location
+    if (!url.startsWith('http')) {
+      window.open(url, '_blank');
+    } else {
+      window.open(url, '_blank');
+    }
+  }
+
+  function copy(el, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = el.textContent;
+      el.textContent = '✓ Copied!';
+      el.style.color = 'var(--green)';
+      setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1500);
+    });
+  }
+
+  function copyCode(el) {
+    navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+      const orig = el.textContent;
+      el.textContent = '✓ Copied to clipboard!';
+      el.style.color = 'var(--green)';
+      setTimeout(() => { el.textContent = orig; el.style.color = ''; }, 1500);
+    });
+  }
+
+  async function checkServer() {
+    const dot  = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    const sub  = document.getElementById('status-sub');
+    dot.className  = 'status-dot dot-yellow';
+    text.textContent = 'Checking…';
+    try {
+      const r = await fetch('http://localhost:8000/health', { signal: AbortSignal.timeout(3000) });
+      const d = await r.json();
+      if (d.status === 'ok') {
+        dot.className  = 'status-dot dot-green';
+        text.textContent = '✅ Backend is running — ready!';
+        sub.textContent  = 'http://localhost:8000 · ' + d.app;
+      } else {
+        throw new Error('Bad response');
+      }
+    } catch {
+      dot.className  = 'status-dot dot-red';
+      text.textContent = '❌ Backend offline — run start_server.bat first';
+      sub.textContent  = 'http://localhost:8000 · Not reachable';
+    }
+  }
+
+  // Auto-check on load
+  checkServer();
+  // Re-check every 15 seconds
+  setInterval(checkServer, 15000);
+</script>
+</body>
+</html>

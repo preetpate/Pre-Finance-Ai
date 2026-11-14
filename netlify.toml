@@ -1,0 +1,10 @@
+# Netlify config — Frontend only
+# Backend runs separately on Railway
+
+[build]
+  publish = "frontend"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,34 @@
+# ─── Web Framework ────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+
+# ─── Database (supports BOTH SQLite locally AND PostgreSQL on cloud) ───────────
+sqlalchemy==2.0.30
+aiosqlite==0.20.0          # SQLite async driver  (local dev)
+asyncpg==0.29.0            # PostgreSQL async driver (Supabase / Railway)
+alembic==1.13.1            # DB migrations
+
+# ─── Authentication ────────────────────────────────────────────────────────────
+python-jose[cryptography]==3.3.0
+passlib[argon2]==1.7.4
+python-multipart==0.0.9
+
+# ─── Data Validation ──────────────────────────────────────────────────────────
+pydantic==2.7.1
+pydantic-settings==2.2.1
+
+# ─── Document Processing ──────────────────────────────────────────────────────
+pymupdf==1.24.3
+python-docx==1.1.2
+
+# ─── AI / Embeddings ──────────────────────────────────────────────────────────
+sentence-transformers==2.7.0
+faiss-cpu==1.8.0
+
+# ─── HTTP client (Ollama API) ─────────────────────────────────────────────────
+httpx==0.27.0
+
+# ─── Utilities ────────────────────────────────────────────────────────────────
+python-dotenv==1.0.1
+aiofiles==23.2.1
+Pillow==10.3.0
